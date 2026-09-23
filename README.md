@@ -6,6 +6,8 @@
 
 A defensive TypeScript reference implementation of the instruction-level profile in the draft [sRFC 39: Solana Clear Sign](https://github.com/solana-foundation/SRFCs/discussions/4). It validates enriched IDLs, decodes Borsh-compatible instruction data, formats fields without floating-point arithmetic, and fails closed to a visible `raw_dump` whenever metadata or bytes cannot be trusted.
 
+![Solana Clear Sign security pipeline](assets/clear-sign-pipeline.svg)
+
 > sRFC 39 is currently a draft. This repository implements an instruction-level conformance profile with amount, flat-struct, unit, string, datetime, duration, raw-number, BoundedSlice, and SizedSlice support. Consumers must authenticate the IDL and token metadata separately. A parser cannot detect a plausible but dishonest decimal value without a trusted registry.
 
 ## What this repository proves
