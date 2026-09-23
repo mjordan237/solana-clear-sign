@@ -3,7 +3,15 @@
   "version": "0.1.0",
   "description": "Defensive sRFC 39 clear-signing reference engine and conformance suite",
   "author": "Elyzion, Inc.",
-  "homepage": "https://www.elyzion.pro",
+  "homepage": "https://github.com/mjordan237/solana-clear-sign#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mjordan237/solana-clear-sign.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mjordan237/solana-clear-sign/issues"
+  },
+  "keywords": ["solana", "clear-signing", "srfc39", "wallet-security", "anchor", "borsh"],
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

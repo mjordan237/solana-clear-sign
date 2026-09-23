@@ -1,0 +1,36 @@
+# Specification profile
+
+This repository targets the instruction-display layer described by the draft sRFC 39 discussion. The draft can change. A release of this package is evidence for the behavior in its tests, not a claim that the proposal is final.
+
+## Implemented
+
+- Strict instruction, argument, account, type, display, and formatter validation
+- Borsh-compatible scalar, option, array, vector, byte, string, public-key, and defined-struct decoding
+- Exact discriminator, account-count, buffer-boundary, and trailing-byte checks
+- Interpolated and structured fallback rendering
+- Amount, unit, string, flat-struct, datetime, duration, and raw numeric formatting
+- BoundedSlice and SizedSlice handling on source or formatted values
+- ASCII, UTF-8, base58, base64, and hexadecimal output
+- Invisible-control, bidirectional-control, mixed-script, and unsafe-path rejection
+- Canonical SHA-256 IDL digest verification
+- Exception-safe `raw_dump` behavior
+- JSON conformance vectors and latency regression testing
+
+## Wallet responsibilities
+
+- Establish that an IDL belongs to the program being signed
+- Select a trusted source for expected IDL digests and token metadata
+- Verify transaction signatures, program identity, executable ownership, upgrade authority, and account state
+- Distinguish `raw_dump` from clear signing and require an explicit blind-signing policy
+- Preserve an expert view of the original instruction and account data
+
+## Draft-dependent work
+
+- Track changes to the sRFC node representation and normative language
+- Validate interoperability with a wallet or hardware-wallet implementation
+- Add property-based fuzzing and independent security review
+- Publish revision-pinned compatibility releases when the proposal stabilizes
+
+## Conformance rule
+
+Every accepted behavior must have a unit test or JSON vector. Every rejected behavior must produce either a schema error or `raw_dump`. Display failures must never silently fall back to a different human-readable intent.
