@@ -1,0 +1,19 @@
+[
+  {"name":"decimal-overflow-metadata","mutation":"formatter","value":{"kind":"amount","decimals":300},"expected":"invalid"},
+  {"name":"native-decimals-conflict","mutation":"formatter","value":{"kind":"amount","isNative":true,"decimals":6},"expected":"invalid"},
+  {"name":"native-token-conflict","mutation":"formatter","value":{"kind":"amount","isNative":true,"token":"SOL"},"expected":"invalid"},
+  {"name":"zero-width-token","mutation":"token","value":"U\u200bSDC","expected":"raw_dump"},
+  {"name":"rlo-token","mutation":"token","value":"USD\u202eC","expected":"raw_dump"},
+  {"name":"cyrillic-homoglyph-token","mutation":"token","value":"UЅDC","expected":"raw_dump"},
+  {"name":"path-traversal","mutation":"template","value":"Pay {../../secret_key}","expected":"invalid"},
+  {"name":"prototype-path","mutation":"template","value":"Pay {__proto__.x}","expected":"raw_dump"},
+  {"name":"unclosed-template","mutation":"template","value":"Pay {amount","expected":"invalid"},
+  {"name":"truncated-u64","mutation":"data","value":"010203","expected":"raw_dump"},
+  {"name":"trailing-data","mutation":"data","value":"010000000000000000ff","expected":"raw_dump"},
+  {"name":"wrong-discriminator","mutation":"discriminator","value":"ff0100000000000000","expected":"raw_dump"},
+  {"name":"account-underflow","mutation":"accounts","value":[],"expected":"raw_dump"},
+  {"name":"invalid-bool","mutation":"bool","value":"02","expected":"raw_dump"},
+  {"name":"huge-vector-length","mutation":"bytes","value":"ffffffff","expected":"raw_dump"},
+  {"name":"negative-token-amount","mutation":"negative","value":"ffffffffffffffff","expected":"raw_dump"},
+  {"name":"out-of-bounds-slice","mutation":"slice","value":{"kind":"BoundedSlice","start":0,"end":99},"expected":"raw_dump"}
+]

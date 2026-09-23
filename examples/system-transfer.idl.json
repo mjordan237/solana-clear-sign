@@ -1,0 +1,28 @@
+{
+  "version": "0.1.0",
+  "name": "system_program",
+  "instructions": [
+    {
+      "name": "transfer",
+      "discriminator": [2, 0, 0, 0],
+      "accounts": [
+        { "name": "from" },
+        { "name": "to" }
+      ],
+      "args": [
+        {
+          "name": "lamports",
+          "type": "u64",
+          "display": {
+            "label": "Amount",
+            "formatter": { "kind": "amount", "isNative": true }
+          }
+        }
+      ],
+      "display": {
+        "mode": "interpolated",
+        "template": "Transfer {lamports} to {to}"
+      }
+    }
+  ]
+}

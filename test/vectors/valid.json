@@ -1,0 +1,52 @@
+[
+  {
+    "name": "spl-token-transferChecked",
+    "idl": { "name": "spl_token", "instructions": [{ "name": "transferChecked", "discriminator": [12], "accounts": [{"name":"source"},{"name":"mint"},{"name":"destination"},{"name":"authority"}], "args": [{"name":"amount","type":"u64","display":{"formatter":{"kind":"amount","token":"USDC","decimals":6}}},{"name":"decimals","type":"u8","display":{"skip":true}}], "display": {"mode":"interpolated","template":"Transfer {amount} to {destination}","fields":["amount","destination"]} }] },
+    "data": "0c40420f000000000006", "accounts": ["Source111","Mint111","Recipient111","Authority111"], "expected": "Transfer 1 USDC to Recipient111"
+  },
+  {
+    "name": "system-program-transfer",
+    "idl": { "name": "system", "instructions": [{ "name": "transfer", "discriminator": [2,0,0,0], "accounts": [{"name":"from"},{"name":"to"}], "args": [{"name":"lamports","type":"u64","display":{"formatter":{"kind":"amount","isNative":true}}}], "display": {"mode":"interpolated","template":"Transfer {lamports} to {to}"} }] },
+    "data": "0200000000ca9a3b00000000", "accounts": ["Sender111","Receiver111"], "expected": "Transfer 1 SOL to Receiver111"
+  },
+  {
+    "name": "stake-delegateStake",
+    "idl": { "name": "stake", "instructions": [{ "name": "delegateStake", "discriminator": [2,0,0,0], "accounts": [{"name":"stakeAccount"},{"name":"voteAccount"},{"name":"authority"}], "args": [], "display": {"mode":"interpolated","template":"Delegate {stakeAccount} to {voteAccount}"} }] },
+    "data": "02000000", "accounts": ["Stake111","Vote111","Authority111"], "expected": "Delegate Stake111 to Vote111"
+  },
+  {
+    "name": "anchor-nested-struct",
+    "idl": { "name": "custom", "types": [{"name":"Order","type":{"kind":"struct","fields":[{"name":"price","type":"u64"},{"name":"quantity","type":"u64"}]}}], "instructions": [{ "name": "placeOrder", "discriminator": [1,2,3,4,5,6,7,8], "accounts": [], "args": [{"name":"order","type":{"defined":"Order"},"display":{"formatter":{"kind":"flatStruct","prefix":"order"}}}], "display": {"mode":"fallback","fields":["order"]} }] },
+    "data": "010203040506070864000000000000000200000000000000", "accounts": [], "expected": "order: order.price: 100, order.quantity: 2"
+  },
+  {
+    "name": "token-2022-transfer-with-fee",
+    "idl": { "name": "token_2022", "instructions": [{ "name": "transferCheckedWithFee", "discriminator": [26,1], "accounts": [{"name":"destination"}], "args": [{"name":"amount","type":"u64","display":{"formatter":{"kind":"amount","token":"USDC","decimals":6}}},{"name":"fee","type":"u64","display":{"formatter":{"kind":"amount","token":"USDC","decimals":6}}}], "display": {"mode":"interpolated","template":"Transfer {amount} to {destination}; fee {fee}"} }] },
+    "data": "1a0180841e00000000008813000000000000", "accounts": ["Recipient222"], "expected": "Transfer 2 USDC to Recipient222; fee 0.005 USDC"
+  },
+  {
+    "name": "unit-basis-points",
+    "idl": { "name": "rates", "instructions": [{ "name": "setRate", "accounts": [], "args": [{"name":"rate","type":"u16","display":{"formatter":{"kind":"unit","symbol":"bps"}}}], "display": {"mode":"interpolated","template":"Set rate to {rate}"} }] },
+    "data": "6400", "accounts": [], "expected": "Set rate to 100bps"
+  },
+  {
+    "name": "string-utf8-slice",
+    "idl": { "name": "memo", "instructions": [{ "name": "memo", "accounts": [], "args": [{"name":"message","type":"bytes","display":{"formatter":{"kind":"string","encoding":"utf8","slice":{"kind":"BoundedSlice","start":0,"end":3,"appliesTo":"source"}}}}], "display": {"mode":"interpolated","template":"Memo: {message}"} }] },
+    "data": "06000000534f4c414e41", "accounts": [], "expected": "Memo: SOL"
+  },
+  {
+    "name": "string-hex",
+    "idl": { "name": "hashes", "instructions": [{ "name": "setHash", "accounts": [], "args": [{"name":"digest","type":{"array":["u8",4]},"display":{"formatter":{"kind":"string","encoding":"hex"}}}], "display": {"mode":"interpolated","template":"Hash {digest}"} }] },
+    "data": "deadbeef", "accounts": [], "expected": "Hash deadbeef"
+  },
+  {
+    "name": "fallback-key-values",
+    "idl": { "name": "settings", "instructions": [{ "name": "configure", "accounts": [], "args": [{"name":"enabled","type":"bool","display":{"label":"Enabled"}},{"name":"limit","type":"u32","display":{"label":"Limit"}}], "display": {"mode":"fallback"} }] },
+    "data": "012a000000", "accounts": [], "expected": "Enabled: true\nLimit: 42"
+  },
+  {
+    "name": "datetime-milliseconds",
+    "idl": { "name": "clock", "instructions": [{ "name": "schedule", "accounts": [], "args": [{"name":"when","type":"u64","display":{"formatter":{"kind":"datetime","ticksPerSecond":1000}}}], "display": {"mode":"interpolated","template":"Schedule at {when}"} }] },
+    "data": "18ca8b199a010000", "accounts": [], "expected": "Schedule at 2025-10-25T04:06:23Z"
+  }
+]
