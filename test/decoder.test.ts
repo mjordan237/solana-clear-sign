@@ -27,4 +27,24 @@ describe("defensive decoder", () => {
     assert.equal(decodeInstruction({}, "missing", new Uint8Array(), []).mode, "raw_dump");
   });
   it("rejects trailing bytes", () => assert.equal(decodeInstruction(idl, "decode", Buffer.from("0000000000000000", "hex"), []).mode, "raw_dump"));
+  it("rejects unsafe text nested inside fallback arrays", () => {
+    const unsafe = Buffer.from("USD\u202eC", "utf8");
+    const data = Buffer.concat([
+      Buffer.from([1, 0, 0, 0]),
+      Buffer.from([unsafe.length, 0, 0, 0]),
+      unsafe
+    ]);
+    const nestedIdl = {
+      name: "unsafe",
+      instructions: [{
+        name: "show",
+        accounts: [],
+        args: [{ name: "labels", type: { vec: "string" } }],
+        display: { mode: "fallback" }
+      }]
+    };
+    const result = decodeInstruction(nestedIdl, "show", data, []);
+    assert.equal(result.mode, "raw_dump");
+    assert.match(result.error, /invisible or bidirectional/);
+  });
 });

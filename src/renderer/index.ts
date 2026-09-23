@@ -24,7 +24,9 @@ function scalar(value: unknown): string {
   if (typeof value === "string") return sanitizeDisplayText(value);
   if (typeof value === "number" || typeof value === "boolean") return String(value);
   if (value === null) return "none";
-  return JSON.stringify(value, (_, item) => typeof item === "bigint" ? item.toString() : item);
+  const rendered = JSON.stringify(value, (_, item) => typeof item === "bigint" ? item.toString() : item);
+  if (rendered === undefined) throw new TypeError("value cannot be rendered");
+  return sanitizeDisplayText(rendered);
 }
 
 function formatted(value: unknown, formatter?: Formatter): string {

@@ -105,7 +105,36 @@ export const extendedIdlSchema = z.object({
   instructions: z.array(instructionSchema).min(1),
   types: z.array(definedTypeSchema).optional()
 }).strict().superRefine((idl, ctx) => {
+  const reportDuplicates = (items: Array<{ name: string }>, path: Array<string | number>, kind: string): void => {
+    const seen = new Set<string>();
+    for (const [index, item] of items.entries()) {
+      if (seen.has(item.name)) {
+        ctx.addIssue({ code: z.ZodIssueCode.custom, path: [...path, index, "name"], message: `duplicate ${kind} name: ${item.name}` });
+      }
+      seen.add(item.name);
+    }
+  };
+
+  reportDuplicates(idl.instructions, ["instructions"], "instruction");
+  reportDuplicates(idl.types ?? [], ["types"], "type");
+
+  for (const [typeIndex, definition] of (idl.types ?? []).entries()) {
+    reportDuplicates(definition.type.fields, ["types", typeIndex, "type", "fields"], "field");
+  }
+
   for (const [index, instruction] of idl.instructions.entries()) {
+    reportDuplicates(instruction.args, ["instructions", index, "args"], "argument");
+    reportDuplicates(instruction.accounts, ["instructions", index, "accounts"], "account");
+    const argumentNames = new Set(instruction.args.map((argument) => argument.name));
+    for (const [accountIndex, account] of instruction.accounts.entries()) {
+      if (argumentNames.has(account.name)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["instructions", index, "accounts", accountIndex, "name"],
+          message: `account name conflicts with argument name: ${account.name}`
+        });
+      }
+    }
     if (!instruction.display) {
       ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["instructions", index, "display"], message: "missing display metadata" });
     }

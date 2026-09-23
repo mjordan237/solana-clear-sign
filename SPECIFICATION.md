@@ -1,6 +1,10 @@
 # Specification profile
 
-This repository targets the instruction-display layer described by the draft sRFC 39 discussion. The draft can change. A release of this package is evidence for the behavior in its tests, not a claim that the proposal is final.
+This repository targets a security-focused subset of the instruction-display layer described by the draft sRFC 39 discussion. The draft can change. A release of this package is evidence for the behavior in its tests, not a claim that the proposal is final or that this profile is wire-compatible with every current display node.
+
+## Compatibility boundary
+
+The prototype schema uses `mode`, `template`, and `fields` as a compact representation for exercising strict decoding and rendering behavior. The evolving sRFC discussion currently describes a broader Codama-oriented node representation, including `intent`, `interpolatedIntent`, account display nodes, and contextual metadata resolution. Translating to that representation is future work and is not claimed by this release.
 
 ## Implemented
 
@@ -26,6 +30,8 @@ This repository targets the instruction-display layer described by the draft sRF
 
 ## Draft-dependent work
 
+- Align the profile with the final sRFC and Codama node representation
+- Implement account display nodes and contextual metadata resolution
 - Track changes to the sRFC node representation and normative language
 - Validate interoperability with a wallet or hardware-wallet implementation
 - Add property-based fuzzing and independent security review

@@ -4,11 +4,11 @@
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](LICENSE)
 [![Node.js 18+](https://img.shields.io/badge/Node.js-18%2B-339933.svg)](package.json)
 
-A defensive TypeScript reference implementation of the instruction-level profile in the draft [sRFC 39: Solana Clear Sign](https://github.com/solana-foundation/SRFCs/discussions/4). It validates enriched IDLs, decodes Borsh-compatible instruction data, formats fields without floating-point arithmetic, and fails closed to a visible `raw_dump` whenever metadata or bytes cannot be trusted.
+An experimental defensive TypeScript implementation of an instruction-level profile inspired by the draft [sRFC 39: Solana Clear Sign](https://github.com/solana-foundation/SRFCs/discussions/4). It validates enriched IDLs, decodes Borsh-compatible instruction data, formats fields without floating-point arithmetic, and fails closed to a visible `raw_dump` whenever metadata or bytes cannot be trusted.
 
 ![Solana Clear Sign security pipeline](assets/clear-sign-pipeline.svg)
 
-> sRFC 39 is currently a draft. This repository implements an instruction-level conformance profile with amount, flat-struct, unit, string, datetime, duration, raw-number, BoundedSlice, and SizedSlice support. Consumers must authenticate the IDL and token metadata separately. A parser cannot detect a plausible but dishonest decimal value without a trusted registry.
+> sRFC 39 is currently a draft. This repository tests a security-focused subset with amount, flat-struct, unit, string, datetime, duration, raw-number, BoundedSlice, and SizedSlice support. It is not yet wire-compatible with every display node in the evolving draft. Consumers must authenticate the IDL and token metadata separately. A parser cannot detect a plausible but dishonest decimal value without a trusted registry.
 
 ## What this repository proves
 
@@ -21,7 +21,7 @@ A defensive TypeScript reference implementation of the instruction-level profile
 | Can another implementation reuse the tests? | Valid and adversarial cases are stored as language-neutral JSON vectors. |
 | Is the performance target automated? | CI asserts average decode latency below 1 ms. |
 
-The implementation currently has 46 automated tests and 27 JSON vectors. The [specification profile](SPECIFICATION.md) separates implemented behavior from wallet responsibilities and draft-dependent work.
+The implementation currently has 50 automated tests and 27 JSON vectors. The [specification profile](SPECIFICATION.md) separates implemented behavior from wallet responsibilities and draft-dependent work.
 
 ## Architecture
 
@@ -86,12 +86,19 @@ Callers must check `result.mode`. A `raw_dump` result is intentionally not a cle
 ## IDL linter
 
 ```bash
-npx solana-clear-sign-lint --idl ./idl.json
+npm run build
+node dist/cli/index.js --idl ./idl.json
 ```
 
 The command exits `0` for a valid enriched IDL and `1` for JSON, schema, missing-display, dangerous-template, or formatter-combination errors.
 
-## Conformance matrix
+## Compatibility status
+
+This prototype deliberately uses a compact profile schema with `mode`, `template`, and `fields` properties. The current sRFC discussion uses a broader Codama-oriented display-node representation, including `intent`, `interpolatedIntent`, account display nodes, and contextual metadata resolution. Those representations are not interchangeable yet.
+
+The implemented profile is useful for testing strict decoding, failure behavior, rendering safety, and reusable adversarial vectors. Full alignment with the final sRFC node representation, wallet integration, and account-state resolution remain explicit follow-on work rather than implied capabilities of this release.
+
+## Implemented profile matrix
 
 | sRFC 39 profile requirement | Implementation | Tests/vectors |
 |---|---|---|
