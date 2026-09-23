@@ -17,11 +17,11 @@ An experimental defensive TypeScript implementation of an instruction-level prof
 | Can instruction bytes be decoded without silent truncation? | The decoder requires exact discriminators, account counts, bounds, and byte consumption. |
 | What happens when metadata is malformed? | Every parsing or rendering failure returns an explicit `raw_dump` result. |
 | Can display labels hide Unicode controls? | Invisible controls, bidirectional overrides, and mixed-script confusables are rejected. |
-| Can untrusted IDLs be blocked? | `decodeVerifiedInstruction` checks a canonical SHA-256 digest before decoding. |
+| Can untrusted IDLs be blocked? | `decodeVerifiedInstruction` checks a canonical SHA-256 digest and binds it to the observed instruction program ID before decoding. |
 | Can another implementation reuse the tests? | Valid and adversarial cases are stored as language-neutral JSON vectors. |
 | Is the performance target automated? | CI asserts average decode latency below 1 ms. |
 
-The implementation currently has 50 automated tests and 27 JSON vectors. The [specification profile](SPECIFICATION.md) separates implemented behavior from wallet responsibilities and draft-dependent work.
+The implementation currently has 51 automated tests and 27 JSON vectors. The [specification profile](SPECIFICATION.md) separates implemented behavior from wallet responsibilities and draft-dependent work.
 
 ## Architecture
 
@@ -46,10 +46,14 @@ The safety boundary is `decodeInstruction`: it catches schema, decoding, formatt
 ## Install and use
 
 ```bash
-npm install
+git clone https://github.com/mjordan237/solana-clear-sign.git
+cd solana-clear-sign
+npm ci
 npm run build
 npm test
 ```
+
+The package is not published to npm yet. These commands build and test a cloned checkout.
 
 ```ts
 import { decodeInstruction } from "solana-clear-sign";
@@ -83,6 +87,8 @@ const result = decodeInstruction(
 
 Callers must check `result.mode`. A `raw_dump` result is intentionally not a clear-signing authorization and should require the wallet's explicit blind-signing flow.
 
+For authenticated decoding, pass the program ID observed on the instruction separately from `expectedProgramId` in the trusted provenance record. `decodeVerifiedInstruction` returns `raw_dump` unless both program IDs match and the canonical IDL digest is correct.
+
 ## IDL linter
 
 ```bash
@@ -110,7 +116,7 @@ The implemented profile is useful for testing strict decoding, failure behavior,
 | ASCII/UTF-8/hex/base58/base64, BoundedSlice, SizedSlice | `src/formatters/string.ts` | formatter + string vectors |
 | Unix epoch/ticks | `src/formatters/datetime.ts` | datetime vector |
 | Duration and raw numeric display | `src/formatters/duration.ts`, `raw.ts` | formatter tests |
-| Authenticated IDL digest policy | `src/provenance.ts` | provenance tests |
+| Authenticated IDL digest and program binding | `src/provenance.ts` | provenance tests |
 | Unicode controls and mixed-script spoofing | `src/security.ts` | adversarial corpus |
 | Safe interpolation paths | schema + renderer | adversarial corpus |
 | Exact, bounds-checked unpacking | `src/parser/decoder.ts` | decoder + adversarial corpus |

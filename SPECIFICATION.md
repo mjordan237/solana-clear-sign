@@ -16,7 +16,7 @@ The prototype schema uses `mode`, `template`, and `fields` as a compact represen
 - BoundedSlice and SizedSlice handling on source or formatted values
 - ASCII, UTF-8, base58, base64, and hexadecimal output
 - Invisible-control, bidirectional-control, mixed-script, and unsafe-path rejection
-- Canonical SHA-256 IDL digest verification
+- Canonical SHA-256 IDL digest verification bound to the observed instruction program ID
 - Exception-safe `raw_dump` behavior
 - JSON conformance vectors and latency regression testing
 

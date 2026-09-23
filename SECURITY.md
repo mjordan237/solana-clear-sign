@@ -8,7 +8,7 @@ Do not open a public issue for a suspected vulnerability. Send a private report 
 
 This library treats clear signing as a fail-closed presentation layer. Parsing, schema, provenance, formatting, sanitization, or interpolation failures return `raw_dump`; callers must not treat that result as clear-sign authorization.
 
-`decodeVerifiedInstruction` verifies a canonical SHA-256 IDL digest before parsing. The caller remains responsible for obtaining the expected digest and program identity from a trusted source such as verified on-chain metadata, embedded firmware, or an authenticated registry.
+`decodeVerifiedInstruction` verifies a canonical SHA-256 IDL digest and requires the instruction's observed program ID to match `expectedProgramId` in the trusted provenance record before parsing. The caller remains responsible for extracting the observed program ID from the transaction and obtaining the expected digest and program identity from a trusted source such as verified on-chain metadata, embedded firmware, or an authenticated registry.
 
 The library does not verify transaction signatures, executable program ownership, upgrade authority, account contents, or the correctness of external token metadata.
 

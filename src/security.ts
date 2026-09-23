@@ -18,5 +18,8 @@ export function safePath(path: string): string[] {
 }
 
 function fieldPathSchemaForRuntime(path: string): boolean {
-  return path.length > 0 && path.split(".").every((part) => /^[A-Za-z_][A-Za-z0-9_]*$/.test(part)) && !path.includes("__proto__") && !path.includes("constructor") && !path.includes("prototype");
+  return path.length > 0 && path.split(".").every((part) => {
+    const normalized = part.toLowerCase();
+    return /^[A-Za-z_][A-Za-z0-9_]*$/.test(part) && normalized !== "__proto__" && normalized !== "constructor" && normalized !== "prototype";
+  });
 }

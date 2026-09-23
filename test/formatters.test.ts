@@ -1,7 +1,7 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 import { decimalScale } from "../src/formatters/common.js";
-import { formatAmount, formatDateTime, formatDuration, formatRaw, formatString, formatUnit, flattenStruct, sanitizeDisplayText } from "../src/index.js";
+import { formatAmount, formatDateTime, formatDuration, formatRaw, formatString, formatUnit, flattenStruct, safePath, sanitizeDisplayText } from "../src/index.js";
 
 describe("formatters", () => {
   it("scales bigint amounts without floating point", () => {
@@ -36,5 +36,6 @@ describe("formatters", () => {
   it("rejects spoofing controls and mixed-script labels", () => {
     assert.throws(() => sanitizeDisplayText("US\u200bDC"), /invisible/);
     assert.throws(() => sanitizeDisplayText("UЅDC"), /confusable/);
+    assert.throws(() => safePath("__PROTO__.value"), /unsafe field path/);
   });
 });
