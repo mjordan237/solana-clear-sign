@@ -1,6 +1,6 @@
 # Specification profile
 
-This repository targets a security-focused subset of the instruction-display layer described by the draft sRFC 39 discussion. The draft can change. A release of this package is evidence for the behavior in its tests, not a claim that the proposal is final or that this profile is wire-compatible with every current display node.
+This repository targets a security-focused subset of the instruction-display layer described by the draft sRFC 39 discussion. The draft can change. Compatibility is measured against the source-content pin in `spec/srfc39-pin.json`, and CI fails when the upstream discussion changes without an explicit review and pin update. A release of this package is evidence for the behavior in its tests, not a claim that the proposal is final or that this profile is wire-compatible with every current display node.
 
 ## Compatibility boundary
 
@@ -18,7 +18,9 @@ The prototype schema uses `mode`, `template`, and `fields` as a compact represen
 - Invisible-control, bidirectional-control, mixed-script, and unsafe-path rejection
 - Canonical SHA-256 IDL digest verification bound to the observed instruction program ID
 - Exception-safe `raw_dump` behavior
-- JSON conformance vectors and latency regression testing
+- Standalone JSON conformance vectors with complete inputs and expected modes
+- A Rust corpus consumer proving that non-JavaScript tooling can ingest the committed vectors
+- Latency regression testing
 
 ## Wallet responsibilities
 
@@ -35,7 +37,7 @@ The prototype schema uses `mode`, `template`, and `fields` as a compact represen
 - Track changes to the sRFC node representation and normative language
 - Validate interoperability with a wallet or hardware-wallet implementation
 - Add property-based fuzzing and independent security review
-- Publish revision-pinned compatibility releases when the proposal stabilizes
+- Publish compatibility releases tied to reviewed sRFC snapshot pins
 
 ## Conformance rule
 

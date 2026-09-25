@@ -8,7 +8,7 @@ An experimental defensive TypeScript implementation of an instruction-level prof
 
 ![Solana Clear Sign security pipeline](assets/clear-sign-pipeline.svg)
 
-> sRFC 39 is currently a draft. This repository tests a security-focused subset with amount, flat-struct, unit, string, datetime, duration, raw-number, BoundedSlice, and SizedSlice support. It is not yet wire-compatible with every display node in the evolving draft. Consumers must authenticate the IDL and token metadata separately. A parser cannot detect a plausible but dishonest decimal value without a trusted registry.
+> sRFC 39 is currently a draft. This repository tests a security-focused subset with amount, flat-struct, unit, string, datetime, duration, raw-number, BoundedSlice, and SizedSlice support. It is not yet wire-compatible with every display node in the evolving draft. The reviewed compatibility target is pinned in `spec/srfc39-pin.json`, and CI rejects upstream drift until the pin is reviewed and updated. Consumers must authenticate the IDL and token metadata separately. A parser cannot detect a plausible but dishonest decimal value without a trusted registry.
 
 ## What this repository proves
 
@@ -21,7 +21,7 @@ An experimental defensive TypeScript implementation of an instruction-level prof
 | Can another implementation reuse the tests? | Valid and adversarial cases are stored as language-neutral JSON vectors. |
 | Is the performance target automated? | CI asserts average decode latency below 1 ms. |
 
-The implementation currently has 51 automated tests and 27 JSON vectors. The [specification profile](SPECIFICATION.md) separates implemented behavior from wallet responsibilities and draft-dependent work.
+The implementation includes automated tests and standalone JSON vectors. The [specification profile](SPECIFICATION.md) separates implemented behavior from wallet responsibilities and draft-dependent work.
 
 ## Architecture
 
@@ -124,7 +124,7 @@ The implemented profile is useful for testing strict decoding, failure behavior,
 | CLI validation | `src/cli/index.ts` | schema tests and CI build |
 | Decode latency below 1 ms average | decoder | `benchmark.test.ts` |
 
-The JSON corpus contains real-world-shaped System, SPL Token, Stake, Anchor, and Token-2022 cases plus malformed metadata, spoofing strings, unsafe paths, truncation, overflow, and conflicting flags. All integers remain `bigint` through formatting; no division or IEEE-754 conversion is used for amounts.
+The JSON corpus contains real-world-shaped System, SPL Token, Stake, Anchor, and Token-2022 cases plus malformed metadata, spoofing strings, unsafe paths, truncation, invalid UTF-8, overflow, and conflicting flags. Each materialized adversarial vector includes the complete IDL, instruction name, instruction bytes, ordered accounts, and expected result mode, so non-JavaScript implementations do not need the TypeScript mutation harness. The example in `interop/rust-vector-consumer` demonstrates independent Rust ingestion. All integers remain `bigint` through formatting; no division or IEEE-754 conversion is used for amounts.
 
 ## Trust and security model
 

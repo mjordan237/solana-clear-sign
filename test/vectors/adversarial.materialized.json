@@ -1,0 +1,780 @@
+[
+  {
+    "name": "decimal-overflow-metadata",
+    "instructionName": "pay",
+    "idl": {
+      "name": "adversarial",
+      "instructions": [
+        {
+          "name": "pay",
+          "discriminator": [
+            1
+          ],
+          "accounts": [
+            {
+              "name": "recipient"
+            }
+          ],
+          "args": [
+            {
+              "name": "amount",
+              "type": "u64",
+              "display": {
+                "formatter": {
+                  "kind": "amount",
+                  "decimals": 300
+                }
+              }
+            }
+          ],
+          "display": {
+            "mode": "interpolated",
+            "template": "Pay {amount} to {recipient}"
+          }
+        }
+      ]
+    },
+    "data": "0140420f0000000000",
+    "accounts": [
+      "Recipient111"
+    ],
+    "expected": {
+      "mode": "invalid"
+    }
+  },
+  {
+    "name": "native-decimals-conflict",
+    "instructionName": "pay",
+    "idl": {
+      "name": "adversarial",
+      "instructions": [
+        {
+          "name": "pay",
+          "discriminator": [
+            1
+          ],
+          "accounts": [
+            {
+              "name": "recipient"
+            }
+          ],
+          "args": [
+            {
+              "name": "amount",
+              "type": "u64",
+              "display": {
+                "formatter": {
+                  "kind": "amount",
+                  "isNative": true,
+                  "decimals": 6
+                }
+              }
+            }
+          ],
+          "display": {
+            "mode": "interpolated",
+            "template": "Pay {amount} to {recipient}"
+          }
+        }
+      ]
+    },
+    "data": "0140420f0000000000",
+    "accounts": [
+      "Recipient111"
+    ],
+    "expected": {
+      "mode": "invalid"
+    }
+  },
+  {
+    "name": "native-token-conflict",
+    "instructionName": "pay",
+    "idl": {
+      "name": "adversarial",
+      "instructions": [
+        {
+          "name": "pay",
+          "discriminator": [
+            1
+          ],
+          "accounts": [
+            {
+              "name": "recipient"
+            }
+          ],
+          "args": [
+            {
+              "name": "amount",
+              "type": "u64",
+              "display": {
+                "formatter": {
+                  "kind": "amount",
+                  "isNative": true,
+                  "token": "SOL"
+                }
+              }
+            }
+          ],
+          "display": {
+            "mode": "interpolated",
+            "template": "Pay {amount} to {recipient}"
+          }
+        }
+      ]
+    },
+    "data": "0140420f0000000000",
+    "accounts": [
+      "Recipient111"
+    ],
+    "expected": {
+      "mode": "invalid"
+    }
+  },
+  {
+    "name": "zero-width-token",
+    "instructionName": "pay",
+    "idl": {
+      "name": "adversarial",
+      "instructions": [
+        {
+          "name": "pay",
+          "discriminator": [
+            1
+          ],
+          "accounts": [
+            {
+              "name": "recipient"
+            }
+          ],
+          "args": [
+            {
+              "name": "amount",
+              "type": "u64",
+              "display": {
+                "formatter": {
+                  "kind": "amount",
+                  "token": "U​SDC",
+                  "decimals": 6
+                }
+              }
+            }
+          ],
+          "display": {
+            "mode": "interpolated",
+            "template": "Pay {amount} to {recipient}"
+          }
+        }
+      ]
+    },
+    "data": "0140420f0000000000",
+    "accounts": [
+      "Recipient111"
+    ],
+    "expected": {
+      "mode": "raw_dump"
+    }
+  },
+  {
+    "name": "rlo-token",
+    "instructionName": "pay",
+    "idl": {
+      "name": "adversarial",
+      "instructions": [
+        {
+          "name": "pay",
+          "discriminator": [
+            1
+          ],
+          "accounts": [
+            {
+              "name": "recipient"
+            }
+          ],
+          "args": [
+            {
+              "name": "amount",
+              "type": "u64",
+              "display": {
+                "formatter": {
+                  "kind": "amount",
+                  "token": "USD‮C",
+                  "decimals": 6
+                }
+              }
+            }
+          ],
+          "display": {
+            "mode": "interpolated",
+            "template": "Pay {amount} to {recipient}"
+          }
+        }
+      ]
+    },
+    "data": "0140420f0000000000",
+    "accounts": [
+      "Recipient111"
+    ],
+    "expected": {
+      "mode": "raw_dump"
+    }
+  },
+  {
+    "name": "cyrillic-homoglyph-token",
+    "instructionName": "pay",
+    "idl": {
+      "name": "adversarial",
+      "instructions": [
+        {
+          "name": "pay",
+          "discriminator": [
+            1
+          ],
+          "accounts": [
+            {
+              "name": "recipient"
+            }
+          ],
+          "args": [
+            {
+              "name": "amount",
+              "type": "u64",
+              "display": {
+                "formatter": {
+                  "kind": "amount",
+                  "token": "UЅDC",
+                  "decimals": 6
+                }
+              }
+            }
+          ],
+          "display": {
+            "mode": "interpolated",
+            "template": "Pay {amount} to {recipient}"
+          }
+        }
+      ]
+    },
+    "data": "0140420f0000000000",
+    "accounts": [
+      "Recipient111"
+    ],
+    "expected": {
+      "mode": "raw_dump"
+    }
+  },
+  {
+    "name": "path-traversal",
+    "instructionName": "pay",
+    "idl": {
+      "name": "adversarial",
+      "instructions": [
+        {
+          "name": "pay",
+          "discriminator": [
+            1
+          ],
+          "accounts": [
+            {
+              "name": "recipient"
+            }
+          ],
+          "args": [
+            {
+              "name": "amount",
+              "type": "u64",
+              "display": {
+                "formatter": {
+                  "kind": "amount",
+                  "token": "USDC",
+                  "decimals": 6
+                }
+              }
+            }
+          ],
+          "display": {
+            "mode": "interpolated",
+            "template": "Pay {../../secret_key}"
+          }
+        }
+      ]
+    },
+    "data": "0140420f0000000000",
+    "accounts": [
+      "Recipient111"
+    ],
+    "expected": {
+      "mode": "invalid"
+    }
+  },
+  {
+    "name": "prototype-path",
+    "instructionName": "pay",
+    "idl": {
+      "name": "adversarial",
+      "instructions": [
+        {
+          "name": "pay",
+          "discriminator": [
+            1
+          ],
+          "accounts": [
+            {
+              "name": "recipient"
+            }
+          ],
+          "args": [
+            {
+              "name": "amount",
+              "type": "u64",
+              "display": {
+                "formatter": {
+                  "kind": "amount",
+                  "token": "USDC",
+                  "decimals": 6
+                }
+              }
+            }
+          ],
+          "display": {
+            "mode": "interpolated",
+            "template": "Pay {__proto__.x}"
+          }
+        }
+      ]
+    },
+    "data": "0140420f0000000000",
+    "accounts": [
+      "Recipient111"
+    ],
+    "expected": {
+      "mode": "raw_dump"
+    }
+  },
+  {
+    "name": "unclosed-template",
+    "instructionName": "pay",
+    "idl": {
+      "name": "adversarial",
+      "instructions": [
+        {
+          "name": "pay",
+          "discriminator": [
+            1
+          ],
+          "accounts": [
+            {
+              "name": "recipient"
+            }
+          ],
+          "args": [
+            {
+              "name": "amount",
+              "type": "u64",
+              "display": {
+                "formatter": {
+                  "kind": "amount",
+                  "token": "USDC",
+                  "decimals": 6
+                }
+              }
+            }
+          ],
+          "display": {
+            "mode": "interpolated",
+            "template": "Pay {amount"
+          }
+        }
+      ]
+    },
+    "data": "0140420f0000000000",
+    "accounts": [
+      "Recipient111"
+    ],
+    "expected": {
+      "mode": "invalid"
+    }
+  },
+  {
+    "name": "truncated-u64",
+    "instructionName": "pay",
+    "idl": {
+      "name": "adversarial",
+      "instructions": [
+        {
+          "name": "pay",
+          "discriminator": [
+            1
+          ],
+          "accounts": [
+            {
+              "name": "recipient"
+            }
+          ],
+          "args": [
+            {
+              "name": "amount",
+              "type": "u64",
+              "display": {
+                "formatter": {
+                  "kind": "amount",
+                  "token": "USDC",
+                  "decimals": 6
+                }
+              }
+            }
+          ],
+          "display": {
+            "mode": "interpolated",
+            "template": "Pay {amount} to {recipient}"
+          }
+        }
+      ]
+    },
+    "data": "010203",
+    "accounts": [
+      "Recipient111"
+    ],
+    "expected": {
+      "mode": "raw_dump"
+    }
+  },
+  {
+    "name": "trailing-data",
+    "instructionName": "pay",
+    "idl": {
+      "name": "adversarial",
+      "instructions": [
+        {
+          "name": "pay",
+          "discriminator": [
+            1
+          ],
+          "accounts": [
+            {
+              "name": "recipient"
+            }
+          ],
+          "args": [
+            {
+              "name": "amount",
+              "type": "u64",
+              "display": {
+                "formatter": {
+                  "kind": "amount",
+                  "token": "USDC",
+                  "decimals": 6
+                }
+              }
+            }
+          ],
+          "display": {
+            "mode": "interpolated",
+            "template": "Pay {amount} to {recipient}"
+          }
+        }
+      ]
+    },
+    "data": "010000000000000000ff",
+    "accounts": [
+      "Recipient111"
+    ],
+    "expected": {
+      "mode": "raw_dump"
+    }
+  },
+  {
+    "name": "wrong-discriminator",
+    "instructionName": "pay",
+    "idl": {
+      "name": "adversarial",
+      "instructions": [
+        {
+          "name": "pay",
+          "discriminator": [
+            1
+          ],
+          "accounts": [
+            {
+              "name": "recipient"
+            }
+          ],
+          "args": [
+            {
+              "name": "amount",
+              "type": "u64",
+              "display": {
+                "formatter": {
+                  "kind": "amount",
+                  "token": "USDC",
+                  "decimals": 6
+                }
+              }
+            }
+          ],
+          "display": {
+            "mode": "interpolated",
+            "template": "Pay {amount} to {recipient}"
+          }
+        }
+      ]
+    },
+    "data": "ff0100000000000000",
+    "accounts": [
+      "Recipient111"
+    ],
+    "expected": {
+      "mode": "raw_dump"
+    }
+  },
+  {
+    "name": "account-underflow",
+    "instructionName": "pay",
+    "idl": {
+      "name": "adversarial",
+      "instructions": [
+        {
+          "name": "pay",
+          "discriminator": [
+            1
+          ],
+          "accounts": [
+            {
+              "name": "recipient"
+            }
+          ],
+          "args": [
+            {
+              "name": "amount",
+              "type": "u64",
+              "display": {
+                "formatter": {
+                  "kind": "amount",
+                  "token": "USDC",
+                  "decimals": 6
+                }
+              }
+            }
+          ],
+          "display": {
+            "mode": "interpolated",
+            "template": "Pay {amount} to {recipient}"
+          }
+        }
+      ]
+    },
+    "data": "0140420f0000000000",
+    "accounts": [],
+    "expected": {
+      "mode": "raw_dump"
+    }
+  },
+  {
+    "name": "invalid-bool",
+    "instructionName": "pay",
+    "idl": {
+      "name": "adversarial",
+      "instructions": [
+        {
+          "name": "pay",
+          "discriminator": [
+            1
+          ],
+          "accounts": [
+            {
+              "name": "recipient"
+            }
+          ],
+          "args": [
+            {
+              "name": "amount",
+              "type": "bool",
+              "display": {}
+            }
+          ],
+          "display": {
+            "mode": "interpolated",
+            "template": "Pay {amount} to {recipient}"
+          }
+        }
+      ]
+    },
+    "data": "0102",
+    "accounts": [
+      "Recipient111"
+    ],
+    "expected": {
+      "mode": "raw_dump"
+    }
+  },
+  {
+    "name": "huge-vector-length",
+    "instructionName": "pay",
+    "idl": {
+      "name": "adversarial",
+      "instructions": [
+        {
+          "name": "pay",
+          "discriminator": [
+            1
+          ],
+          "accounts": [
+            {
+              "name": "recipient"
+            }
+          ],
+          "args": [
+            {
+              "name": "amount",
+              "type": "bytes",
+              "display": {
+                "formatter": {
+                  "kind": "string"
+                }
+              }
+            }
+          ],
+          "display": {
+            "mode": "interpolated",
+            "template": "Pay {amount} to {recipient}"
+          }
+        }
+      ]
+    },
+    "data": "01ffffffff",
+    "accounts": [
+      "Recipient111"
+    ],
+    "expected": {
+      "mode": "raw_dump"
+    }
+  },
+  {
+    "name": "invalid-utf8-string",
+    "instructionName": "pay",
+    "idl": {
+      "name": "adversarial",
+      "instructions": [
+        {
+          "name": "pay",
+          "discriminator": [
+            1
+          ],
+          "accounts": [
+            {
+              "name": "recipient"
+            }
+          ],
+          "args": [
+            {
+              "name": "amount",
+              "type": "string",
+              "display": {}
+            }
+          ],
+          "display": {
+            "mode": "interpolated",
+            "template": "Pay {amount} to {recipient}"
+          }
+        }
+      ]
+    },
+    "data": "0101000000ff",
+    "accounts": [
+      "Recipient111"
+    ],
+    "expected": {
+      "mode": "raw_dump"
+    }
+  },
+  {
+    "name": "negative-token-amount",
+    "instructionName": "pay",
+    "idl": {
+      "name": "adversarial",
+      "instructions": [
+        {
+          "name": "pay",
+          "discriminator": [
+            1
+          ],
+          "accounts": [
+            {
+              "name": "recipient"
+            }
+          ],
+          "args": [
+            {
+              "name": "amount",
+              "type": "i64",
+              "display": {
+                "formatter": {
+                  "kind": "amount",
+                  "token": "USDC",
+                  "decimals": 6
+                }
+              }
+            }
+          ],
+          "display": {
+            "mode": "interpolated",
+            "template": "Pay {amount} to {recipient}"
+          }
+        }
+      ]
+    },
+    "data": "01ffffffffffffffff",
+    "accounts": [
+      "Recipient111"
+    ],
+    "expected": {
+      "mode": "raw_dump"
+    }
+  },
+  {
+    "name": "out-of-bounds-slice",
+    "instructionName": "pay",
+    "idl": {
+      "name": "adversarial",
+      "instructions": [
+        {
+          "name": "pay",
+          "discriminator": [
+            1
+          ],
+          "accounts": [
+            {
+              "name": "recipient"
+            }
+          ],
+          "args": [
+            {
+              "name": "amount",
+              "type": "bytes",
+              "display": {
+                "formatter": {
+                  "kind": "string",
+                  "slice": {
+                    "kind": "BoundedSlice",
+                    "start": 0,
+                    "end": 99
+                  }
+                }
+              }
+            }
+          ],
+          "display": {
+            "mode": "interpolated",
+            "template": "Pay {amount} to {recipient}"
+          }
+        }
+      ]
+    },
+    "data": "0103000000616263",
+    "accounts": [
+      "Recipient111"
+    ],
+    "expected": {
+      "mode": "raw_dump"
+    }
+  }
+]

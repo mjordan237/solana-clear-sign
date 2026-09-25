@@ -14,6 +14,7 @@
   {"name":"account-underflow","mutation":"accounts","value":[],"expected":"raw_dump"},
   {"name":"invalid-bool","mutation":"bool","value":"02","expected":"raw_dump"},
   {"name":"huge-vector-length","mutation":"bytes","value":"ffffffff","expected":"raw_dump"},
+  {"name":"invalid-utf8-string","mutation":"utf8","value":"ff","expected":"raw_dump"},
   {"name":"negative-token-amount","mutation":"negative","value":"ffffffffffffffff","expected":"raw_dump"},
   {"name":"out-of-bounds-slice","mutation":"slice","value":{"kind":"BoundedSlice","start":0,"end":99},"expected":"raw_dump"}
 ]

@@ -23,7 +23,10 @@
     "test": "npm run build:test && c8 --reporter=text --reporter=json-summary --all --include='.test-dist/src/**/*.js' --exclude='.test-dist/src/cli/**' node --test .test-dist/test/*.test.js",
     "test:watch": "npm run build:test && node --test --watch .test-dist/test/*.test.js",
     "build:test": "tsc -p tsconfig.test.json",
-    "bench": "npm run build:test && node --test .test-dist/test/benchmark.test.js"
+    "bench": "npm run build:test && node --test .test-dist/test/benchmark.test.js",
+    "spec:verify": "node scripts/verify-spec-pin.mjs",
+    "vectors:materialize": "node scripts/materialize-vectors.mjs",
+    "vectors:verify": "node scripts/materialize-vectors.mjs --check"
   },
   "engines": { "node": ">=18" },
   "license": "Apache-2.0",

@@ -20,6 +20,8 @@ jobs:
           node-version: ${{ matrix.node }}
           cache: npm
       - run: npm ci
+      - run: npm run spec:verify
+      - run: npm run vectors:verify
       - run: npm run lint
       - run: npm run build
       - run: npm test
